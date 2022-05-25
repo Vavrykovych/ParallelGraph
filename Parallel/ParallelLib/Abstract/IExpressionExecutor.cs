@@ -9,5 +9,7 @@ namespace ParallelLib.Abstract
     public interface IExpressionExecutor
     {
         object Execute();
+
+        object ExecuteForMatrix();
     }
 }

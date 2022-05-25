@@ -17,6 +17,11 @@ namespace ParallelLib
             return calc(tree);
         }
 
+        public object ExecuteForMatrix()
+        {
+            return calcFormatrix(tree);
+        }
+
         private static object calc(Node tree)
         {
             if (!ExpressionTree.isOperator(tree.data))
@@ -52,5 +57,31 @@ namespace ParallelLib
             }
         }
 
+        private static object calcFormatrix(Node tree)
+        {
+            if (!ExpressionTree.isOperator(tree.data))
+            {
+                return tree.data;
+            }
+            else
+            {
+                var left = calcFormatrix(tree.left) as Matrix.Matrix;
+                var right = calcFormatrix(tree.right) as Matrix.Matrix;
+
+                if (tree.data.ToString() == "+")
+                {
+                    return left + right;
+                }
+                if (tree.data.ToString() == "-")
+                {
+                    return left - right;
+                }
+                if (tree.data.ToString() == "*")
+                {
+                    return left * right;
+                }
+                throw new ArgumentException(nameof(tree));
+            }
+        }
     }
 }
