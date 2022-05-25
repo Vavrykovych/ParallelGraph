@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParallelLib
 {
@@ -113,41 +111,6 @@ namespace ParallelLib
                 args.Push(op);
             }
             return args.Pop();
-        }
-
-        public static object calc(Node tree)
-        {
-            if (!isOperator(tree.data))
-            {
-                return tree.data;
-            }
-            else
-            {
-                var left = calc(tree.left);
-                var right = calc(tree.right);
-
-                if(tree.data.ToString() == "+")
-                {
-                    return (double)left + (double)right;
-                }
-                if(tree.data.ToString() == "-")
-                {
-                    return (double)left - (double)right;
-                }
-                if (tree.data.ToString() == "*")
-                {
-                    return (double)left * (double)right;
-                }
-                if (tree.data.ToString() == "/")
-                {
-                    return (double)left / (double)right;
-                }
-                if (tree.data.ToString() == "^")
-                {
-                    return Math.Pow((double)left,(double)right);
-                }
-                throw new ArgumentException(nameof(tree));
-            }
         }
     }
 }
