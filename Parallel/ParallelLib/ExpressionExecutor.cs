@@ -11,16 +11,9 @@ namespace ParallelLib
         {
             tree = ExpressionTree.expressionTree(expression);
         }
+        public object ExecuteForMatrix() => calcFormatrix(tree);
+        public object Execute() => calc(tree);
 
-        public object Execute()
-        {
-            return calc(tree);
-        }
-
-        public object ExecuteForMatrix()
-        {
-            return calcFormatrix(tree);
-        }
 
         private static object calc(Node tree)
         {
@@ -34,25 +27,15 @@ namespace ParallelLib
                 var right = calc(tree.right);
 
                 if (tree.data.ToString() == "+")
-                {
                     return (double)left + (double)right;
-                }
                 if (tree.data.ToString() == "-")
-                {
                     return (double)left - (double)right;
-                }
                 if (tree.data.ToString() == "*")
-                {
                     return (double)left * (double)right;
-                }
                 if (tree.data.ToString() == "/")
-                {
                     return (double)left / (double)right;
-                }
                 if (tree.data.ToString() == "^")
-                {
                     return Math.Pow((double)left, (double)right);
-                }
                 throw new ArgumentException(nameof(tree));
             }
         }
@@ -60,26 +43,18 @@ namespace ParallelLib
         private static object calcFormatrix(Node tree)
         {
             if (!ExpressionTree.isOperator(tree.data))
-            {
                 return tree.data;
-            }
             else
             {
                 var left = calcFormatrix(tree.left) as Matrix.Matrix;
                 var right = calcFormatrix(tree.right) as Matrix.Matrix;
 
                 if (tree.data.ToString() == "+")
-                {
                     return left + right;
-                }
                 if (tree.data.ToString() == "-")
-                {
                     return left - right;
-                }
                 if (tree.data.ToString() == "*")
-                {
                     return left * right;
-                }
                 throw new ArgumentException(nameof(tree));
             }
         }

@@ -20,7 +20,6 @@ namespace ParallelLib
             int size = ExpressionTree.GetSize(tree);
             nodes = ExpressionTree.ToList(tree).ToArray();
             matrix = new int[size, size];
-
             
             for(int i = 0; i < size; i++)
             {
@@ -31,12 +30,10 @@ namespace ParallelLib
                 }
             }
         }
-
         public bool HasPath(int from, int to)
         {
             return matrix[from, to] == 1;
         }
-
         public void SetPath(int from, int to)
         {
             matrix[from, to] = 1;

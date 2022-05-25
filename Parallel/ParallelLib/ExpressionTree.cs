@@ -56,7 +56,7 @@ namespace ParallelLib
                 return 2;
             if(op.data.ToString() == "+" || op.data.ToString() == "-") 
                 return 3;
-            return -1;
+            return 4;
         }
 
         public static Node expressionTree(object[] expression)
@@ -64,50 +64,50 @@ namespace ParallelLib
             Stack<Node> args = new Stack<Node>();
             Stack<Node> ops = new Stack<Node>();
             Node temp;
-
             for (int i = 0; i < expression.Length; i++)
             {
                 temp = new Node(expression[i]);
-
-                if (isOperator(expression[i]))
+                if (expression[i].ToString() == "(")
+                    ops.Push(temp);
+                else if (expression[i].ToString() == ")")
+                {
+                    while (ops.FirstOrDefault().data.ToString() != "(")
+                    {
+                        var op = ops.Pop();
+                        var arg2 = args.Pop();
+                        var arg1 = args.Pop();
+                        op.right = arg2;
+                        op.left = arg1;
+                        args.Push(op);
+                    }
+                    ops.Pop();
+                }
+                else if (isOperator(expression[i]))
                 {
                     var prevOp = ops.FirstOrDefault();
-
                     if (prevOp != null && getOperatorPriority(prevOp) < getOperatorPriority(temp))
                     {
                         var arg2 = args.Pop();
-
                         var arg1 = args.Pop();
-
                         prevOp = ops.Pop();
-
                         prevOp.left = arg1;
                         prevOp.right = arg2;
-
                         args.Push(prevOp);
                         ops.Push(temp);
                     }
                     else
-                    {
                         ops.Push(temp);
-                    }
                 }
                 else
-                {
                     args.Push(temp);
-                }
             }
-
             while(ops.Count != 0)
             {
                 var op = ops.Pop();
-
                 var arg2 = args.Pop();
                 var arg1 = args.Pop();
-
                 op.right = arg2;
                 op.left = arg1;
-
                 args.Push(op);
             }
             return args.Pop();

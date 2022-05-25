@@ -13,12 +13,13 @@ namespace ParallelLib
         private readonly ParallelGraph parallelForm;
         private readonly Node[] operations;
         private readonly int threads;
-        public ParallelExpressionExecutor(object[] expression, int threadsCount1)
+
+        public ParallelExpressionExecutor(object[] expression, int threadsCount)
         {
             parallelTree = ExpressionTree.expressionTree(expression);
             parallelForm = new ParallelGraph(new ExpressionGraph(parallelTree));
             operations = ExpressionTree.ToList(parallelTree).ToArray();
-            threads = threadsCount1;
+            threads = threadsCount;
         }
 
         public object Execute()
@@ -41,12 +42,9 @@ namespace ParallelLib
 
             for (int i = tiers.Length - 2; i >= 0; i--)
             {
-                Console.WriteLine("tier " + i);
-
                 Parallel.ForEach(tiers[i], new ParallelOptions { MaxDegreeOfParallelism = threads }, operation =>
                 {
                     CalcExpNode(operation);
-                    Console.WriteLine($"Thread ID:{Thread.CurrentThread.ManagedThreadId} TierID: {i}");
                 });
             }
 
@@ -73,19 +71,14 @@ namespace ParallelLib
 
             for (int i = tiers.Length - 2; i >= 0; i--)
             {
-                Console.WriteLine("tier " + i);
-
                 Parallel.ForEach(tiers[i], new ParallelOptions { MaxDegreeOfParallelism = threads }, operation =>
                 {
                     CalcMatrixNode(operation);
-                    Console.WriteLine($"Thread ID:{Thread.CurrentThread.ManagedThreadId} TierID: {i}");
                 });
             }
 
             return tiers[0].FirstOrDefault()?.data;
         }
-
-
 
         private static void CalcExpNode(Node tree)
         {
@@ -96,7 +89,6 @@ namespace ParallelLib
 
             var left = tree.left.data;
             var right = tree.right.data;
-
 
             if (tree.data.ToString() == "+")
             {
@@ -126,10 +118,8 @@ namespace ParallelLib
             {
                 return;
             }
-
             ParallelLib.Matrix.Matrix left = tree.left.data as ParallelLib.Matrix.Matrix;
             ParallelLib.Matrix.Matrix right = tree.right.data as ParallelLib.Matrix.Matrix;
-
 
             if (tree.data.ToString() == "+")
             {

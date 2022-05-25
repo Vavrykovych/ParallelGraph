@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ParallelLib.Matrix
 {
     public class Matrix
     {
         private double[,] matrix;
-
         public Matrix(double[,] matrix)
         {
             this.matrix = matrix;
@@ -32,8 +32,36 @@ namespace ParallelLib.Matrix
                     matrix[i, j] = random.NextDouble() * random.Next(int.MaxValue);
                 }
             }
-
             return matrix;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Matrix;
+
+            if(other == null)
+            {
+                return false;
+            }
+
+            if(matrix.GetLength(0) != other.matrix.GetLength(0)
+                || matrix.GetLength(1) != other.matrix.GetLength(1))
+            {
+                return false;
+            }
+
+            for(int i = 0;i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i, j] != other[i, j])
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public double this[int row, int col]
